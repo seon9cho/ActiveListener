@@ -2,6 +2,12 @@
 
 Task-based chatbots tend to suffer from either overconfidence or ignorance&mdash;giving a response that is confidently wrong or completely uncertain (e.g."I don't know"). A chatbot that could identify the source of its uncertainty and ask a clarifying question would lessen the burden of query reformulation for the user. We introduce a two-turn query-response-query (QRQ) task, in which a user queries the chatbot and the chatbot must ask a clarifying question, which results in a second user query that clarifies the user's intent. We evaluate performance in two ways: 1) by the perplexity of the response on the Taskmaster-2 dataset, and 2) by information acquisition between the first user query and the second user query, as measured by an intent classifier. We train a variety of architectures for these objectives, including a supervised encoder-decoder transformer and an unsupervised system trained to acquire more information from the second query than the first. Although the unsupervised system does not currently improve on baseline, there are positive indications that a similar approach could yield positive results in future.
 
+<div align="center">
+
+  <img src="graphics/system-intent.png">
+  Figure 1: Stages of the QRQ system with an example dialogue.
+</div>
+
 ## Introduction
 
 Many of the current industrial-level voice assistants fall short in two areas: accuracy and specificity. These shortcomings can be addressed by rule-based systems that try to account for all request types (e.g. Alexa Skills and Google Assistant Actions), but even with these kinds of complicated rule-based systems sourced from thousands of developers, it is not hard to push the voice assistant into a domain where it cannot respond accurately or specifically. 
@@ -23,15 +29,6 @@ The primary contributions of our system are as follows:
 - We provide an end-to-end language model for clarifying response generation, removing reliance on a manually curated dictionary of intent-response pairs.
 - We provide an unsupervised training scheme in which a neural network can learn to provide a clarifying response without seeing any examples of clarifying responses.
 
-```
-\begin{figure*}
-        \centering
-        \includegraphics[width=0.99\linewidth]{visualizations/system-intent.png}
-        \caption{Stages of the QRQ system with an example dialogue.}
-        \label{fig:mainarchi}
-\end{figure*}
-```
-
 ## Related Work
 
 Our work is related to research in the areas listed below.
@@ -48,20 +45,103 @@ Uncertainty estimation is important for ensuring safety and robustness of AI sys
 
 Over the past few years, several chatbot platforms have been developed to facilitate the creation of chatbots. Some of these platforms have NLP capabilities for the creation of chatbots with active listening capabilities. More recently, research uses language models such as T5 to create chatbots. For the current work, we used the pre-trained T5 transformer model. We rely on this pre-trained transformer to act as a language partner, allowing us to train our model in an essentially unsupervised manner.
 
-\input{tables/dataset}
-\input{tables/sample-text}
-
 ## Dataset
 
-We use the Taskmaster 2 Dataset, an extension of the Taskmaster-1 Dataset.
+<table align="center">
+  <thead align="left">
+    <tr>
+      <th colspan="3">"conversation_id" : "dlg-00187b735-345e-4c43-b744-e955b6836c43"<br>"instruction_id" : "movie-26"</th>
+    <tr>
+      <th><b>Annotation</b></th>
+      <th>Speaker</th>
+      <th>Text</th>
+    </tr>
+    </tr>
+  </thead>
+  <tbody align="left">
+    <tr>
+      <th rowspan="5"><b>movie_search.location.theater</b></th>
+      <th>Assistant</th>
+      <th>How can I help you?</th>
+    </tr>
+    <tr>
+      <th>User</th>
+      <th>What movies are playing?</th>
+    </tr>
+    <tr>
+      <th>Assistant</th>
+      <th>I can help you with your movie search.</th>
+    </tr>
+    <tr>
+      <th>Assistant</th>
+      <th>Where are you located?</th>
+    </tr>
+    <tr>
+      <th>User</th>
+      <th>Davis, California</th>
+    </tr>
+    <tr>
+      <th rowspan="2"><b>movie_search.genre</b></th>
+      <th>Assistant</th>
+      <th>Do you have a type of movie you wanted to go see?</th>
+    </tr>
+    <tr>
+      <th>User</th>
+      <th>Action</th>
+    </tr>
+    <tr>
+      <th rowspan="6"><b>movie_search.name.movie</b></th>
+      <th>Assistant</th>
+      <th>Just one moment</th>
+    </tr>
+    <tr>
+      <th>Assistant</th>
+      <th>Here is what I found</th>
+    </tr>
+    <tr>
+      <th>Assistant</th>
+      <th>Baby driver</th>
+    </tr>
+    <tr>
+      <th>Assistant</th>
+      <th>The mummy</th>
+    </tr>
+    <tr>
+      <th>Assistant</th>
+      <th>Guardians of the Galaxy: Vol 2.</th>
+    </tr>
+    <tr>
+      <th>User</th>
+      <th>The mummy</th>
+    </tr>
+    <tr>
+      <th rowspan="4">movie_search.time.start</th>
+      <th>Assistant</th>
+      <th>Okay. The Mummy is playing at 4:30 pm this afternoon<br>at Regal Davis Stadium 5.</th>
+    </tr>
+    <tr>
+      <th>User</th>
+      <th>Ok</th>
+    </tr>
+      <th>Assistant</th>
+      <th>Enjoy your movie!</th>
+    </tr>
+    <tr>
+      <th>User</th>
+      <th>Thanks!</th>
+    </tr>
+  </tbody>
+</table>
+<div align="center">
+  Table 1: An example of a conversation with annotations from the Taskmaster-2 dataset.
+</div>
+<br>
+We use the Taskmaster-2 Dataset, an extension of the Taskmaster-1 Dataset.
 Taskmaster-2 includes 17,289 dialogues (341,801 utterances) in 7 domains.
 Each utterance is fully annotated using 90 possible annotations.
-We define these annotations as intents for the data. A sample dialogue can be seen in Table #.
-
+We define these annotations as intents for the data. A sample dialogue can be seen in Table 1.
 We use individual user utterances (152,668 instances) as well as concatenated consecutive user utterances (138,892 instances) to train the intent classifier.
-
 We use user/assistant pairs (147,875 instances) to fine-tune the QR model.
-
 We use users/assistant/user triples (138,892 instances) to fine-tune the QRQ model conversational partner.
 
 ## QRQ Task
@@ -73,6 +153,10 @@ Though the ultimate goal involves making a decision of whether a clarifying resp
 2. The query is also passed through the response generator model, which provides a response (R), which is passed to a language model, which provides a second query (Q2).
 3. Q1, R, and Q2 are passed through the intent classifier, which provides probabilities for the presence/absence of each intent in the three-turn dialogue.
 4. The performance of the model is measured as the difference of the summed intents present at the end versus the beginning of the dialogue. We call this difference the "Information Acquisition" score.
+
+<table>
+  
+</table>
 
 ## Models
 
