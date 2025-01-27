@@ -38,29 +38,25 @@ Our work is related to research in the areas listed below.
 
 ### Existing apps and products
 
-There is a rich line of work on developing conversational agents where natural language processing lies at the heart of the technology. Some of them engage users in a text-based conversations to draw out their views and opinions \cite{Xiao_2020interview} and ask open-ended questions to collect the data that they need \cite{Xiao_2020active}. Past studies have examined chatbots as personal assistants \cite{liao2018all}, interviewers \cite{li2017confiding}, mental health supporters \cite{inkster2018empathy} and even AI companions \cite{ta2020user}. The major issues with these conversational agents are inaccuracy and ambiguity. Both inaccuracy and ambiguity show a lack of understanding of user intent. In this work we apply the active listening principle of asking clarifying questions to mitigate these problems by requesting further information.
+There is a rich line of work on developing conversational agents where natural language processing lies at the heart of the technology. Some of them engage users in a text-based conversations to draw out their views and opinions and ask open-ended questions to collect the data that they need. Past studies have examined chatbots as personal assistants, interviewers, mental health supporters and even AI companions. The major issues with these conversational agents are inaccuracy and ambiguity. Both inaccuracy and ambiguity show a lack of understanding of user intent. In this work we apply the active listening principle of asking clarifying questions to mitigate these problems by requesting further information.
 
-\subsection{Uncertainty}
+### Uncertainty
 
-Uncertainty estimation is important for ensuring safety and robustness of AI systems and chatbots. Some works aim to investigate how to obtain uncertainty estimates for tokens in a sequence and for whole sequence classification \cite{malinin2021uncertainty}. In order to decrease the uncertainty of our model, our agent asks clarifying questions which leads the model to gain more certainty about the user's query. To measure model performance before and after asking a clarifying question, we introduce the "Information Acquisition Score" described in section 4.3. 
+Uncertainty estimation is important for ensuring safety and robustness of AI systems and chatbots. Some works aim to investigate how to obtain uncertainty estimates for tokens in a sequence and for whole sequence classification. In order to decrease the uncertainty of our model, our agent asks clarifying questions which leads the model to gain more certainty about the user's query. To measure model performance before and after asking a clarifying question, we introduce the "Information Acquisition Score" described in section 4.3. 
 
-\subsection{Natural language generation and language models}
+### Natural language generation and language models
 
-Over the past few years, several chatbot platforms have been developed to facilitate the creation of chatbots. Some of these platforms such as \cite{sabharwal2020introduction} have NLP capabilities for the creation of chatbots with active listening capabilities. More recently, research uses language models such as T5 to create chatbots \cite{bird2020chatbot}. For the current work, we used the pre-trained T5 transformer model. We rely on this pre-trained transformer to act as a language partner, allowing us to train our model in an essentially unsupervised manner.
-
-%\subsection{Measurements and evaluation metrics}
-%\pa{I'm not sure how well this section works. Do we need it? I'm not sure how %to place our work in regards to it}
-%\an{I agree. Maybe we don't need this section here. We can cite that %particular metrics as we report them in the result section.}
-%The failure modes of inaccuracy and ambiguity have been previously identified, %and various evaluation metrics have been proposed to measure the proficiency %of conversational models in these aspects. \cite{adiwardana2020humanlike} use %the terms ``Sensibleness" to describe the accuracy and ``Specificity" to %describe the model's ability to provide a non-generic response.
+Over the past few years, several chatbot platforms have been developed to facilitate the creation of chatbots. Some of these platforms have NLP capabilities for the creation of chatbots with active listening capabilities. More recently, research uses language models such as T5 to create chatbots. For the current work, we used the pre-trained T5 transformer model. We rely on this pre-trained transformer to act as a language partner, allowing us to train our model in an essentially unsupervised manner.
 
 \input{tables/dataset}
 \input{tables/sample-text}
 
-\section{Dataset}
-We use the Taskmaster 2 Dataset~\cite{byrne2020taskmaster2}, an extension of the Taskmaster-1 Dataset~\cite{byrne2019taskmaster}.
+## Dataset
+
+We use the Taskmaster 2 Dataset, an extension of the Taskmaster-1 Dataset.
 Taskmaster-2 includes 17,289 dialogues (341,801 utterances) in 7 domains.
 Each utterance is fully annotated using 90 possible annotations.
-We define these annotations as intents for the data. A sample dialogue can be seen in Table~\ref{tab:datset}.
+We define these annotations as intents for the data. A sample dialogue can be seen in Table #.
 
 We use individual user utterances (152,668 instances) as well as concatenated consecutive user utterances (138,892 instances) to train the intent classifier.
 
@@ -68,17 +64,18 @@ We use user/assistant pairs (147,875 instances) to fine-tune the QR model.
 
 We use users/assistant/user triples (138,892 instances) to fine-tune the QRQ model conversational partner.
 
-\section{QRQ Task}
+## QRQ Task
+
 Though the ultimate goal involves making a decision of whether a clarifying response is necessary, for simplicity, we restrict our study to the QRQ task. This consists of a three turn scenario with the details outlined below:
 
-\begin{enumerate}
-    \item The user provides a query (Q1), which is passed through an intent classifier to provide probabilities for the presence/absence of each intent in Q1.
-    \item The query is also passed through the response generator model, which provides a response (R), which is passed to a language model, which provides a second query (Q2).
-    \item Q1, R, and Q2 are passed through the intent classifier, which provides probabilities for the presence/absence of each intent in the three-turn dialogue.
-    \item The performance of the model is measured as the difference of the summed intents present at the end versus the beginning of the dialogue. We call this difference the ``Information Acquisition" score.
-\end{enumerate}
 
-\section{Models}
+1. The user provides a query (Q1), which is passed through an intent classifier to provide probabilities for the presence/absence of each intent in Q1.
+2. The query is also passed through the response generator model, which provides a response (R), which is passed to a language model, which provides a second query (Q2).
+3. Q1, R, and Q2 are passed through the intent classifier, which provides probabilities for the presence/absence of each intent in the three-turn dialogue.
+4. The performance of the model is measured as the difference of the summed intents present at the end versus the beginning of the dialogue. We call this difference the "Information Acquisition" score.
+
+## Models
+
 Our main research objective is to train a working response generator using the Information Acquisition (IA) method. The goal of the IA method is to train a model in an unsupervised setting, where we are only given the input query and train a response generator. In order to do this, we must first train the Intent Classifier, the QR model, and the QRQ model. The specifications for the three trained models are explained below. 
 
 \subsection{Intent Classifier} 
