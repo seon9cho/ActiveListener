@@ -12,6 +12,17 @@ With current voice assistant models, a common source of friction in human-assist
 
 We train a system in a three-turn scenario, where the user provides a query (Q1), the assistant provides a response (R), and the user provides another query (Q2) that increases the amount of information provided to the assistant. We do so in an unsupervised manner, such that the only necessary data is a dataset of user queries. We term this task "QRQ". Because our model is trained with an objective to maximize the information gain, we call our model the "Information Acquisition (IA) Transformer Model".
 
+We fine-tune a generatively pre-trained transformer as the main component of our pipeline, to provide the ability to process any query expressed in natural language, as well as respond in natural language. Furthermore, we leverage a pre-trained language model as a language partner, to remove the reliance on a large dataset of Q-R-Q triples. We also use an intent classification model at turn 1 and turn 3 of the conversation, and train with the objective of increasing information between turn 1 and turn 3. This turns the task into an unsupervised learning problem, in which the model learns to respond based solely on a query dataset. This has broad applications for any scenario with a large number of query examples, but no ground truth responses (e.g. any currently deployed voice assistant has access to almost unlimited queries).
+
+
+Figure 1 shows the high-level control flow of our IA model. In the first stage (T1), the user provides a query (Q1). The model predicts a multi-label intent vector for that user's query. Based on the predicted intent vector, the natural language generation module generates a clarifying question as its response (R) which prompts the user to ask another query (Q2), providing the system with more information than before (i.e., more slots in the multi-label intent vector is filled). For example, in Figure 1, the system response 'What city are you in?' directed the user to query 'Frankfurt, Germany...' such that the system has more information about the user's intent than before.  
+
+The primary contributions of our system are as follows:
+
+- We propose an evaluation task, which we term "QRQ", for the ability of an assistant to clarify the intent of a user.
+- We provide an end-to-end language model for clarifying response generation, removing reliance on a manually curated dictionary of intent-response pairs.
+- We provide an unsupervised training scheme in which a neural network can learn to provide a clarifying response without seeing any examples of clarifying responses.
+
 ```
 \begin{figure*}
         \centering
@@ -21,17 +32,6 @@ We train a system in a three-turn scenario, where the user provides a query (Q1)
 \end{figure*}
 ```
 
-We fine-tune a generatively pre-trained transformer as the main component of our pipeline, to provide the ability to process any query expressed in natural language, as well as respond in natural language. Furthermore, we leverage a pre-trained language model as a language partner, to remove the reliance on a large dataset of Q-R-Q triples. We also use an intent classification model at turn 1 and turn 3 of the conversation, and train with the objective of increasing information between turn 1 and turn 3. This turns the task into an unsupervised learning problem, in which the model learns to respond based solely on a query dataset. This has broad applications for any scenario with a large number of query examples, but no ground truth responses (e.g. any currently deployed voice assistant has access to almost unlimited queries).
-
-
-Figure~\ref{fig:mainarchi} shows the high-level control flow of our IA model. In the first stage (T1), the user provides a query (Q1). The model predicts a multi-label intent vector for that user's query. Based on the predicted intent vector, the natural language generation module generates a clarifying question as its response (R) which prompts the user to ask another query (Q2), providing the system with more information than before (i.e., more slots in the multi-label intent vector is filled). For example, in Figure~\ref{fig:mainarchi}, the system response 'What city are you in?' directed the user to query 'Frankfurt, Germany...' such that the system has more information about the user's intent than before.  
-
-The primary contributions of our system are as follows:
-
-- We propose an evaluation task, which we term "QRQ", for the ability of an assistant to clarify the intent of a user.
-- We provide an end-to-end language model for clarifying response generation, removing reliance on a manually curated dictionary of intent-response pairs.
-- We provide an unsupervised training scheme in which a neural network can learn to provide a clarifying response without seeing any examples of clarifying responses.
-  
 ## Related Work
 
 Our work is related to research in the areas listed below.
