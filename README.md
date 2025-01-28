@@ -306,14 +306,73 @@ As mentioned earlier, we use the Taskmaster 2 for all our experiments. We avoid 
 <div align="center">
   Table 3: Samples from our fine-tuned QRQ model conversational partner.
 </div>
+<br>
 
 ### Evaluation
 
 Understanding the user's intent is vital to precisely address the query in dialog systems. To understand the role of intent in our method, we have three different models. Each model is evaluated differently. For the Intent classifier, we use F1 score and accuracy to assess the performance. For the QR and the IA model, we use perplexity scores and information acquisition to assess the performance. 
 
+<table align="center">
+  <tbody align="left">
+    <tr>
+      <th>Model</th>
+      <th>Perplexity</th>
+      <th>Information Acquisition</th>
+    </tr>
+    <tr>
+      <th>QR before fine-tuning (Baseline)</th>
+      <th>5.28e10</th>
+      <th>.1127</th>
+    </tr>
+    <tr>
+      <th>QR Transformer (Supervised)</th>
+      <th>2.32390</th>
+      <th>.1128</th>
+    </tr>
+    <tr>
+      <th>IA Transformer (Unsupervised)</th>
+      <th>inf</th>
+      <th>.0977</th>
+    </tr>
+    <tr>
+      <th>IA Transformer with QR fine-tuning (Supervised/Unsupervised)</th>
+      <th>inf</th>
+      <th>.0977</th>
+    </tr>
+  </tbody>
+</table>
+<div align="center">
+  Table 4: Evaluation metrics for our different models.
+</div>
+<br>
+
 #### Intent Classification
 
 The Taskmaster 2 dataset is hand annotated such that each utterance is labeled with 90 possible annotations. We call these annotations intents. So the input to the intent classification model is a sentence and a binary vector of length 90. The dataset is split into two sets: training (80\%) and validation (20\%). The cross entropy loss is used during training time but F1 scores, precision, and recall are used to assess the performance for the validation datasets as this is multi-class classification problem.
+
+<table align="center">
+  <tbody>
+    <tr>
+      <th></th>
+      <th>F1 Score</th>
+      <th>Accuracy</th>
+    </tr>
+    <tr>
+      <th>QQ Intent Classifier</th>
+      <th>0.94</th>
+      <th>0.95</th>
+    </tr>
+    <tr>
+      <th>QQ Classifier (Baseline)</th>
+      <th>0.21</th>
+      <th>0.24</th>
+    </tr>
+  </tbody>
+</table>
+<div align="center">
+  Table 5: The intent classifier acts as a binary classifier for the<br>presence/absence of each class. Thus, we report its F1 score<br>as a binary classifier for each class, averaged across classes. <br>Likewise, we report the average binary classification accuracy<br>across classes.
+</div>
+<br>
 
 #### Encoder-Decoder
 
