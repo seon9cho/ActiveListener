@@ -136,6 +136,7 @@ Over the past few years, several chatbot platforms have been developed to facili
   Table 1: An example of a conversation with annotations from the Taskmaster-2 dataset.
 </div>
 <br>
+
 We use the Taskmaster-2 Dataset, an extension of the Taskmaster-1 Dataset.
 Taskmaster-2 includes 17,289 dialogues (341,801 utterances) in 7 domains.
 Each utterance is fully annotated using 90 possible annotations.
@@ -143,6 +144,47 @@ We define these annotations as intents for the data. A sample dialogue can be se
 We use individual user utterances (152,668 instances) as well as concatenated consecutive user utterances (138,892 instances) to train the intent classifier.
 We use user/assistant pairs (147,875 instances) to fine-tune the QR model.
 We use users/assistant/user triples (138,892 instances) to fine-tune the QRQ model conversational partner.
+
+<table align="center">
+  <thead align="left">
+    <tr>
+      <th></th>
+      <th>Label</th>
+      <th>Text</th>
+    </tr>
+  </thead>
+  <tbody align="left">
+    <tr>
+      <th rowspan="3">Baseline</th>
+      <th>Input Text</th>
+      <th>I would like you to help me finding a hotel in San Francisco, Downtown area, California.</th>
+    </tr>
+    <tr>
+      <th>Output Text</th>
+      <th>Ich m¨ochte Sie bitten, mir bei der Suche nach einem Hotel in San Francisco, Downtown area, California zu helfen.</th>
+    </tr>
+    <tr>
+      <th>Target Text</th>
+      <th>What is the price range?</th>
+    </tr>
+    <tr>
+      <th rowspan="3">Fine-tuned</th>
+      <th>Input Text</th>
+      <th>I'd like to see the Edge of Tomorrow trailer.</th>
+    </tr>
+    <tr>
+      <th>Output Text</th>
+      <th>Okay, I have your personal details on file. Your order will be ready for pickup in 20 minutes.</th>
+    </tr>
+    <tr>
+      <th>Target Text</th>
+      <th>Anything else I can help you with?</th>
+    </tr>
+  </tbody>
+</table>
+<div align="center">
+  Table 2: Sample query/response text from our encode/decoder model.
+</div>
 
 ## QRQ Task
 
@@ -153,10 +195,6 @@ Though the ultimate goal involves making a decision of whether a clarifying resp
 2. The query is also passed through the response generator model, which provides a response (R), which is passed to a language model, which provides a second query (Q2).
 3. Q1, R, and Q2 are passed through the intent classifier, which provides probabilities for the presence/absence of each intent in the three-turn dialogue.
 4. The performance of the model is measured as the difference of the summed intents present at the end versus the beginning of the dialogue. We call this difference the "Information Acquisition" score.
-
-<table>
-  
-</table>
 
 ## Models
 
