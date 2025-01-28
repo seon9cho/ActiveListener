@@ -283,11 +283,29 @@ In this section, we show how our information acquisition approach to dialog syst
 
 As mentioned earlier, we use the Taskmaster 2 for all our experiments. We avoid the practice of training an end-to-end method on labeled user's response as the goal of the experiment is to validate if the model can ask appropriate clarifying questions that increase its information cache. In order to achieve this goal, we couple three different models: a) the Intent Classifier, b) the QR model, and c) the IA model. We separately train each model on a slight variation of the Taskmaster 2 dataset. 
 
-\input{tables/qrq-samples}
-
-\input{tables/evaluation-metrics}
-
-\input{tables/classification-accuracy}
+<table align="center">
+  <tbody align="left">
+    <tr>
+      <th>Label</th>
+      <th>Text</th>
+    </tr>
+    <tr>
+      <th>Q1<br>R<br>Q2 Output<br>Q2 Target</th>
+      <th>How about the 7:00 p . m ?<br>The return flights are at 12 p . m , 4:05 p.m. 11:35 p.m.<br>How about the 4:05 p.m?<br>Let's do the 4:05 p.m. return on the flight. That would be nice.</th>
+    </tr>
+    <tr>
+      <th>Q1<br>R<br>Q2 Output<br>Q2 Target</th>
+      <th>Does that include the return flight?<br>How does 5:30 a.m. work ?<br>Well, 5:30 a.m. works.<br>Well, the evening works better.</th>
+    </tr>
+    <tr>
+      <th>Q1<br>R<br>Q2 Output<br>Q2 Target</th>
+      <th> And I would like to fly during the night time and  a red-eye.<br>Alright. What else ?<br>I would like to fly in the morning and I would like to fly in the morning.<br>I would like it to be under $500.</th>
+    </tr>
+  </tbody>
+</table>
+<div align="center">
+  Table 3: Samples from our fine-tuned QRQ model conversational partner.
+</div>
 
 ### Evaluation
 
