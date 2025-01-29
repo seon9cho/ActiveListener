@@ -225,7 +225,7 @@ The QR model is our baseline model. The training objective of this model is to t
 \end{equation}
 ```
 
-Equation 2 is the standard language modeling approach which is usually framed as unsupervised distribution estimation from a set of examples $(x_1, x_2, \dots, x_n)$ each composed of variable length sequences of symbols $(s_1, s_2, \dots, s_n)$. We use equation 2 to fine-tune the pre-trained T5 transformer model on the Taskmaster2.
+Equation 2 is the standard language modeling approach which is usually framed as unsupervised distribution estimation from a set of examples $(x_1, x_2, \dots, x_n)$ each composed of variable length sequences of symbols $(s_1, s_2, \dots, s_n)$. We use equation 2 to fine-tune the pre-trained T5 transformer model on the Taskmaster-2.
 
 ### QRQ Model
 
@@ -281,7 +281,7 @@ In this section, we show how our information acquisition approach to dialog syst
 
 ### Experiment Setup
 
-As mentioned earlier, we use the Taskmaster 2 for all our experiments. We avoid the practice of training an end-to-end method on labeled user's response as the goal of the experiment is to validate if the model can ask appropriate clarifying questions that increase its information cache. In order to achieve this goal, we couple three different models: a) the Intent Classifier, b) the QR model, and c) the IA model. We separately train each model on a slight variation of the Taskmaster 2 dataset. 
+As mentioned earlier, we use the Taskmaster-2 for all our experiments. We avoid the practice of training an end-to-end method on labeled user's response as the goal of the experiment is to validate if the model can ask appropriate clarifying questions that increase its information cache. In order to achieve this goal, we couple three different models: a) the Intent Classifier, b) the QR model, and c) the IA model. We separately train each model on a slight variation of the Taskmaster-2 dataset. 
 
 <table align="center">
   <tbody align="left">
@@ -348,7 +348,7 @@ Understanding the user's intent is vital to precisely address the query in dialo
 
 #### Intent Classification
 
-The Taskmaster 2 dataset is hand annotated such that each utterance is labeled with 90 possible annotations. We call these annotations intents. So the input to the intent classification model is a sentence and a binary vector of length 90. The dataset is split into two sets: training (80\%) and validation (20\%). The cross entropy loss is used during training time but F1 scores, precision, and recall are used to assess the performance for the validation datasets as this is multi-class classification problem.
+The Taskmaster-2 dataset is hand annotated such that each utterance is labeled with 90 possible annotations. We call these annotations intents. So the input to the intent classification model is a sentence and a binary vector of length 90. The dataset is split into two sets: training (80\%) and validation (20\%). The cross entropy loss is used during training time but F1 scores, precision, and recall are used to assess the performance for the validation datasets as this is multi-class classification problem.
 
 <table align="center">
   <tbody>
@@ -377,7 +377,7 @@ The Taskmaster 2 dataset is hand annotated such that each utterance is labeled w
 
 #### Encoder-Decoder
 
-For this task the taskmaster 2 dataset is unchanged. Similar to Intent Classification, the dataset is split into two sets: training (80\%) and validation (20\%). During the training time, the standard loss function is used to train the model. Perplexity and information acquisition are used to assess the response of the model. 
+For this task the Taskmaster-2 dataset is unchanged. Similar to Intent Classification, the dataset is split into two sets: training (80\%) and validation (20\%). During the training time, the standard loss function is used to train the model. Perplexity and information acquisition are used to assess the response of the model. 
 
 #### QRQ
 
