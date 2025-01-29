@@ -368,11 +368,12 @@ The Taskmaster 2 dataset is hand annotated such that each utterance is labeled w
       <th>0.24</th>
     </tr>
   </tbody>
+  <tbody align="left">
+    <tr>
+      <th colspan=3>Table 5: The intent classifier acts as a binary classifier for the<br>presence/absence of each class. Thus, we report its F1 score<br>as a binary classifier for each class, averaged across classes. <br>Likewise, we report the average binary classification accuracy<br>across classes.</th>
+    </tr>
+  </tbody>
 </table>
-<div align="center">
-  Table 5: The intent classifier acts as a binary classifier for the<br>presence/absence of each class. Thus, we report its F1 score<br>as a binary classifier for each class, averaged across classes. <br>Likewise, we report the average binary classification accuracy<br>across classes.
-</div>
-<br>
 
 #### Encoder-Decoder
 
@@ -386,18 +387,17 @@ For this task the same dataset used for Intent Classification is used. During th
 
 Figure 3 shows that the QQ intent classifier outperforms the baseline classifier by a wide margin in both F1 Score and Accuracy. The attention mechanism is the only difference between our model and the baseline model. In the baseline model, we use a einsum operation between a uniformly initialized weight and the input tensor which acts as a naive attention mechanism. All other fully connected layers is same between our and baseline model. Both the models were trained on 80\% of the dataset for 50 epoch with batch size of 64. It took around 5 hrs to train both model. The results were obtained by running inference on same validation set with batch size 64 for 478 iterations.
 
-\begin{figure*}
-        \centering
-        \includegraphics[width=0.99\linewidth]{visualizations/intent-results.png}
-        \caption{Our intent classification model a) outperforms the baseline model b) on the test set.}
-        \label{fig:intent-results}
-\end{figure*}
-
 Table 2 shows the results of fine-tuning the QR model. There is an apparent increase in quality from the baseline to the fine-tuned model.
 
 Table 3 shows samples of the fine-tuned QRQ output acting as a conversational partner. Some of the well-known problems with language models can be observed (e.g the repetition of phrases in the third sample). However, the quality of second queries seems adequate.
 
 Table 4 shows the perplexity results for the Information Acquisition model. The Information Acquisition model both increases perplexity to infinity in contrast to the QR baselines and also under-performs those baselines in Information Acquisition.
+
+<div align="center">
+
+  <img src="graphics/intent-results.png">
+  Figure 3: Our intent classification model a) outperforms the baseline model b) on the test set.
+</div>
 
 ## Conclusion
 
