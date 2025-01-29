@@ -261,8 +261,8 @@ Q2 Decoder is a fine-tuned language model that generates the next query given th
   <table align="center">
     <tbody>
       <tr>
-        <th><img src="graphics/IA_train.png" width=400></th>
-        <th><img src="graphics/QR_eval.png" width=400></th>
+        <th><img src="graphics/modified/IA_train.png" width=400></th>
+        <th><img src="graphics/modified/QR_eval.png" width=400></th>
       </tr>
       <tr>
         <th>(a) IA training task</th>
@@ -395,7 +395,7 @@ Table 4 shows the perplexity results for the Information Acquisition model. The 
 
 <div align="center">
 
-  <img src="graphics/intent-results.png">
+  <img src="graphics/modified/intent-results.png">
   Figure 3: Our intent classification model a) outperforms the baseline model b) on the test set.
 </div>
 
